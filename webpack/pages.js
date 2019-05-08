@@ -46,7 +46,7 @@ module.exports = {
     ...sitePagesEn.map(
       p =>
         new HtmlWebpackPlugin({
-          filename: `${path.basename(p, path.extname(p))}.html`,
+          filename: `en/${path.basename(p, path.extname(p))}.html`,
           title: "Finish the wechat redirect once and for all!",
           chunks: [path.basename(p, path.extname(p)), "vendors~index", "index"],
           template: "src/static/index.html"
