@@ -14,7 +14,7 @@ import Orders from "../components/Orders";
 class Index extends React.Component {
   componentDidMount(): void {
     console.log("did mount");
-    location.href = process.env.ASSET_PATH + "/en/";
+    location.href = process.env.ASSET_PATH + "en/";
   }
 
   render() {

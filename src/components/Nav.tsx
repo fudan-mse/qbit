@@ -13,10 +13,10 @@ export const Nav = (props: NavProps) => (
     ]}
   >
     <Menu.Item key="/en">
-      <Link to="/en/">Market</Link>
+      <Link to={process.env.ASSET_PATH + "en"}>Market</Link>
     </Menu.Item>
     <Menu.Item key="/en/orders">
-      <Link to="/en/orders">Orders</Link>
+      <Link to={process.env.ASSET_PATH + "en/orders"}>Orders</Link>
     </Menu.Item>
     <Menu.Item key="/source">
       <a
