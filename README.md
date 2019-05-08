@@ -20,3 +20,17 @@
 ```shell
 npm run server
 ```
+
+### 创建 secure token
+
+**注意**: 如果你把 token 明文写在 `.travis` 文件中，一旦提交代码，这个 token 将被自动删除，因此会在 travis deploy 过程中碰到 token 无效的错误。
+
+步骤请参考：https://docs.travis-ci.com/user/environment-variables#defining-encrypted-variables-in-travisyml
+
+```shell
+gem install travis
+travis login
+# 输入 github 用户名密码
+# 登录成功
+travis encrypt github_token=<token> --add env.matrix
+```
