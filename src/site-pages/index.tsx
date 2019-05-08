@@ -1,10 +1,9 @@
-import Markdown from "markdown-to-jsx";
 require("../common/service-worker");
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 
-import { Col, Layout, Row } from "antd";
-const { Header, Footer, Content } = Layout;
+import { Layout } from "antd";
+const { Header, Content } = Layout;
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import "../less/layout.less";
 import { Nav } from "../components/Nav";
@@ -15,7 +14,7 @@ import Orders from "../components/Orders";
 class Index extends React.Component {
   componentDidMount(): void {
     console.log("did mount");
-    location.href = "/en/";
+    location.href = process.env.ASSET_PATH + "/en/";
   }
 
   render() {

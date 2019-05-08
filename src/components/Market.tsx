@@ -9,7 +9,9 @@ export default class Market extends React.Component {
         <h5>
           <Link
             to="/en/orders"
-            onClick={() => (location.pathname = "/en/orders")}
+            onClick={() =>
+              (location.pathname = process.env.ASSET_PATH + "/en/orders")
+            }
           >
             Go to Orders
           </Link>

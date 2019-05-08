@@ -8,7 +8,9 @@ export const Nav = (props: NavProps) => (
     mode="horizontal"
     theme="dark"
     style={{ lineHeight: "64px" }}
-    defaultSelectedKeys={[location.pathname]}
+    defaultSelectedKeys={[
+      location.pathname.replace(process.env.ASSET_PATH, "/")
+    ]}
   >
     <Menu.Item key="/en">
       <Link to="/en/">Market</Link>
