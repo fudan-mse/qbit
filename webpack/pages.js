@@ -38,7 +38,7 @@ module.exports = {
       p =>
         new HtmlWebpackPlugin({
           filename: `${path.basename(p, path.extname(p))}.html`,
-          title: "人生苦短，少做跳转。一劳永逸，不再搬砖。",
+          title: "My Order Management System",
           chunks: [path.basename(p, path.extname(p)), "vendors~index", "index"],
           template: "src/static/index.html"
         })
