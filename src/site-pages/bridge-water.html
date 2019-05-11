@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>bridge-water.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: "Segoe WPC", "Segoe UI", "SFUIText-Light", "HelveticaNeue-Light", sans-serif, "Droid Sans Fallback";
+	font-size: 14px;
+	padding: 0 12px;
+	line-height: 22px;
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	color: #4080D0;
+	text-decoration: none;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+h1 code,
+h2 code,
+h3 code,
+h4 code,
+h5 code,
+h6 code {
+	font-size: inherit;
+	line-height: auto;
+}
+
+a:hover {
+	color: #4080D0;
+	text-decoration: underline;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left: 5px solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 14px;
+	line-height: 19px;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+.mac code {
+	font-size: 12px;
+	line-height: 18px;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+/** Theming */
+
+.vscode-light,
+.vscode-light pre code {
+	color: rgb(30, 30, 30);
+}
+
+.vscode-dark,
+.vscode-dark pre code {
+	color: #DDD;
+}
+
+.vscode-high-contrast,
+.vscode-high-contrast pre code {
+	color: white;
+}
+
+.vscode-light code {
+	color: #A31515;
+}
+
+.vscode-dark code {
+	color: #D7BA7D;
+}
+
+.vscode-light pre:not(.hljs),
+.vscode-light code > div {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre:not(.hljs),
+.vscode-dark code > div {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre:not(.hljs),
+.vscode-high-contrast code > div {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+.vscode-light blockquote,
+.vscode-dark blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.vscode-high-contrast blockquote {
+	background: transparent;
+	border-color: #fff;
+}
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family:  "Meiryo", "Segoe WPC", "Segoe UI", "SFUIText-Light", "HelveticaNeue-Light", sans-serif, "Droid Sans Fallback";
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+</head>
+<body>
+<p>Bridgewater Association 是如何赚钱的？</p>
+<hr>
+<p>16222010272 田杰</p>
+<h2 id="%E4%B8%80%E3%80%81%E7%AE%80%E4%BB%8B">一、简介</h2>
+<p>Bridgewater Association，桥水投资，是一家美国投资管理公司，由Ray  Dalio于1975年创立。其资产管理规模目前在1247亿美元，在 Top 10 私募中排名第一。</p>
+<p>该公司为机构客户提供服务，包括养老基金、捐赠基金、基金会、外国政府以及中央银行。</p>
+<h2 id="%E4%BA%8C%E3%80%81%E6%8A%95%E8%B5%84%E9%A3%8E%E6%A0%BC">二、投资风格</h2>
+<p>它利用了基于通货膨胀、货币汇率和美国国内生产总值等经济趋势的全球宏观投资风格。</p>
+<h2 id="%E4%B8%89%E3%80%81%E6%8A%95%E8%B5%84%E5%93%B2%E5%AD%A6">三、投资哲学</h2>
+<p>据创始人Ray Dalio称，桥水投资是一家全球宏观公司。它在使用“量化”投资方法来识别新的投资的同时，避免了不合现实的历史模型。它的目标是基于风险配置而非资产配置，来构建能够产生非相关性的投资回报的投资组合。</p>
+<h3 id="1%E3%80%81%E5%88%86%E7%A6%BB-alpha-%E5%92%8C-beta">1、分离 alpha 和 beta</h3>
+<p>该公司将投资分为两个基本类别：</p>
+<h4 id="%EF%BC%881%EF%BC%89beta-%E6%8A%95%E8%B5%84">（1）Beta 投资</h4>
+<p>即通过被动管理和标准市场风险获取回报</p>
+<h4 id="%EF%BC%882%EF%BC%89alpha-%E6%8A%95%E8%B5%84">（2）Alpha 投资</h4>
+<p>目标是获取与通用市场不相关的更高回报，并且是主动管理的。</p>
+<h3 id="2%E3%80%81%E7%B3%BB%E7%BB%9F%E5%A4%9A%E5%85%83%E9%85%8D%E7%BD%AE">2、系统多元配置</h3>
+<p>桥水使用的投资系统结合了“赌徒似的在全球市场上下注”的传统多元配置并且尝试投资于不会互相“进入锁定步伐”的工具和市场。在投资策略的引导上，公司的上层执行官编写了数以百计的“决策规则”。这实际上是公司员工手册《原则》的金融推论,而且被集成进了公司计算机分析里。</p>
+<h3 id="3%E3%80%81%E9%A3%8E%E9%99%A9%E5%B9%B3%E4%BB%B7">3、风险平价</h3>
+<p>桥水基金在1996年正式推出“全天候策略”。</p>
+<p>但是从1971年那次匪夷所思的大涨开始，Dalio用了整整1/4个世纪去思考一个问题：</p>
+<blockquote>
+<p>普通投资者需要持有怎样的资产组合，才能使回报在所有市场境况中都能平衡表现？</p>
+</blockquote>
+<p>这里就引出全天候策略的核心理念——风险平价 (Risk Parity)。</p>
+<p>简言之，就是在限制条件下，构建一个风险最低的投资组合。在这个组合中，不同类别的资产提供的风险波动是均等的。</p>
+<h2 id="%E5%9B%9B%E3%80%81%E4%BA%A7%E5%93%81">四、产品</h2>
+<p>公司提供三种对冲基金给它的客户：纯 Alpha 基金，全天候基金以及主市场纯 Alpha 基金。公司还发布每日观察白皮书，被全球投资者订阅。</p>
+<h3 id="%E7%BA%AF-alpha">纯 Alpha</h3>
+<p>1989年发布的旗舰产品。此基金被描述为投资横跨一组资产类别的“分散的Alpha源头”。它的设计是通过主动管理来在大量的非相关性资产中平衡风险。它包括30到40个交易头寸并行分布在债券、货币、股指以及大宗商品中，从而避免在单一领域集中投资造成的价格影响。在将公司的剩余现金放置于纯Alpha对冲基金，从而提升了它的“投资判断力”之后，此基金从2006年开始不再对新的投资者开放。这一年，它达到了预定的最大的基金规模。直到2011年，此基金在其20年的历史里，只有3年是亏损的，其年化收益率为18%。</p>
+<p>纯Alpha基金的成功被归于在大量资产类别中交易的可移植的alphat管理风格。</p>
+<h3 id="%E5%85%A8%E5%A4%A9%E5%80%99">全天候</h3>
+<p>1996年发布，强调对低费率、全球与通胀挂钩的债券、全球固定收益资产的投资。始于创始人的信托基金，逐渐对客户开放。基金的目标是创造超出一般市场的“风险调整过后的高收益”。2009年4月，雷曼兄弟倒闭后，此基金进入“安全投资组合” 模式，即包含名义债券、通胀挂钩债券，以及黄金，取代了股权、新兴市场债务和大宗商品。据报道该基金包含40%的通胀挂钩债券、30%的短期国库券、20%的国库债券以及10%的黄金。</p>
+<h3 id="%E4%B8%BB%E5%B8%82%E5%9C%BA%E7%BA%AF-alpha">主市场纯 Alpha</h3>
+<p>创于2011年，240亿规模。是最大的一次对冲基金发布。该基金是一个类似纯Alpha的投资工具，但是聚焦在诸如欧洲债券的主市场，增强了流动性。</p>
+<h3 id="%E6%AF%8F%E6%97%A5%E8%A7%82%E5%AF%9F">每日观察</h3>
+<p>这是公司的旗舰白皮书产品和服务。它的特点是全面、一些版本长达43页。被誉为行业内的“被转发得最为广泛的市场分析之一”。</p>
+<h2 id="%E4%BA%94%E3%80%81%E6%80%BB%E7%BB%93">五、总结</h2>
+<p>公司的投资分成两个部分：主动管理的 Alpha 投资和被动跟踪的 Beta 投资。前者旨在降低与市场的相关性并获取超额回报；而后者完全跟踪市场，使投资者获取市场收益。</p>
+<p>创始人Dalio认为，所有基金的回报无非是由三个部分组成：无风险回报率（现金）、市场回报率（Beta），和超额回报率（Beta）。</p>
+<p>总回报 = 无风险回报率 (现金) + 市场回报率 (Beta) + 超额回报率 (Alpha)</p>
+<p>但是市面上的其它基金淡化了不同回报之间的边界，使获知回报的来源变得极为困难。桥水基金的目标是单独分离出Alpha和Beta，将它们打造成两种独立的投资产品。</p>
+<p>桥水在设立了旗下第一支旗舰基金——主动型纯 Alpha 基金之后，Dalio等人也认识到，由于市场是高度不确定的，获取超额收益的成本过于昂贵；而且实现超额收益的过程是一个零和游戏，参与对赌的任何一方都无法保证在所有时刻都决策正确。</p>
+<p>因此，对多数投资者而言，便宜的被动型策略Beta就现实得多。毕竟从长期看，投资者要做的不是跑赢市场，而是在控制风险的前提下，取得良好的回报。</p>
+<p>全天候策略应运而生。</p>
+<h2 id="%E5%85%AD%E3%80%81%E5%8F%82%E8%80%83%E6%96%87%E7%8C%AE">六、参考文献</h2>
+<p>【1】Bridgewater Associates. <a href="https://en.wikipedia.org/wiki/Bridgewater_Associates">https://en.wikipedia.org/wiki/Bridgewater_Associates</a></p>
+<p>【2】「桥水」是一家怎样的机构？
+<a href="https://www.zhihu.com/question/41593078">https://www.zhihu.com/question/41593078</a></p>
+
+</body>
+</html>
