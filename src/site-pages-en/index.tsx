@@ -11,6 +11,7 @@ import "../less/layout.less";
 import { Nav } from "../components/Nav";
 import SiteFooter from "../components/SiteFooter";
 import Orders from "../components/Orders";
+import { BlotterDetail } from "../components/BlotterDetail";
 
 ReactDOM.render(
   <div>
@@ -26,6 +27,7 @@ ReactDOM.render(
           <Switch>
             <Route exact path="/en/" component={Market} />
             <Route exact path="/en/orders" component={Orders} />
+            <Route exact path="/en/blotter/1234" component={BlotterDetail} />
           </Switch>
         </Content>
         <SiteFooter />

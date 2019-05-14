@@ -5,6 +5,7 @@ const fs = require("fs");
 const sitePages = fs.readdirSync("src/site-pages");
 const functionalPages = fs.readdirSync("src/function-pages");
 const sitePagesEn = fs.readdirSync("src/site-pages-en");
+const sitePagesEnBlotter = fs.readdirSync("src/site-pages-en/blotter");
 
 const entries = {};
 
@@ -18,8 +19,17 @@ sitePages.map(f => {
 });
 
 sitePagesEn.map(f => {
-  entries["en/" + path.basename(f, path.extname(f))] = [
-    `./src/site-pages-en/${f}`,
+  if (fs.lstatSync(path.join("src/site-pages-en/", f)).isFile()) {
+    entries["en/" + path.basename(f, path.extname(f))] = [
+      `./src/site-pages-en/${f}`,
+      `webpack-hot-middleware/client`
+    ];
+  }
+});
+
+sitePagesEnBlotter.map(f => {
+  entries["en/blotter" + path.basename(f, path.extname(f))] = [
+    `./src/site-pages-en/blotter/${f}`,
     `webpack-hot-middleware/client`
   ];
 });
@@ -47,7 +57,16 @@ module.exports = {
       p =>
         new HtmlWebpackPlugin({
           filename: `en/${path.basename(p, path.extname(p))}.html`,
-          title: "Finish the wechat redirect once and for all!",
+          title: "My Order Management System",
+          chunks: [path.basename(p, path.extname(p)), "vendors~index", "index"],
+          template: "src/static/index.html"
+        })
+    ),
+    ...sitePagesEnBlotter.map(
+      p =>
+        new HtmlWebpackPlugin({
+          filename: `en/blotter/${path.basename(p, path.extname(p))}.html`,
+          title: "My Order Management System",
           chunks: [path.basename(p, path.extname(p)), "vendors~index", "index"],
           template: "src/static/index.html"
         })
