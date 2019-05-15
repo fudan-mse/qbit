@@ -67,7 +67,11 @@ module.exports = {
         new HtmlWebpackPlugin({
           filename: `en/blotter/${path.basename(p, path.extname(p))}.html`,
           title: "My Order Management System",
-          chunks: [path.basename(p, path.extname(p)), "vendors~index", "index"],
+          chunks: [
+            `en/blotter${path.basename(p, path.extname(p))}`,
+            "en/vendors~index",
+            "index"
+          ],
           template: "src/static/index.html"
         })
     ),

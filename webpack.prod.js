@@ -45,7 +45,11 @@ module.exports = {
     ])
   ],
   output: {
-    filename: "[name].[hash].js",
+    filename: chunkData => {
+      console.log("chunkData = ", chunkData.chunk.name);
+      // if(chunkData.chunk.name )
+      return "[name].[hash].js";
+    },
     path: path.resolve(__dirname, "dist"),
     publicPath: ASSET_PATH
   },
