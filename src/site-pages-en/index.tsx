@@ -27,7 +27,8 @@ ReactDOM.render(
           <Switch>
             <Route exact path="/en/" component={Market} />
             <Route exact path="/en/orders" component={Orders} />
-            <Route exact path="/en/blotter/1234" component={BlotterDetail} />
+            <Route exact path="/en/blotter/:symbol" component={BlotterDetail} />
+            <Route path="*" component={() => <div>404 NOT FOUND</div>} />
           </Switch>
         </Content>
         <SiteFooter />
