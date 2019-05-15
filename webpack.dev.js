@@ -27,7 +27,7 @@ module.exports = {
     }),
     new FaviconsWebpackPlugin({
       logo: "./src/static/images/logo.jpg",
-      title: "人生苦短",
+      title: "My Order Management System",
       icons: {
         android: true,
         appleIcon: true,
@@ -49,7 +49,10 @@ module.exports = {
     new webpack.NoEmitOnErrorsPlugin()
   ],
   output: {
-    filename: "[name].[hash].js",
+    filename: chunkData => {
+      console.log("chunkData = ", chunkData);
+      return "[name].[hash].js";
+    },
     path: path.resolve(__dirname, "dist"),
     publicPath: ASSET_PATH
   },
