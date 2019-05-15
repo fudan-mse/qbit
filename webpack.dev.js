@@ -50,7 +50,7 @@ module.exports = {
   ],
   output: {
     filename: chunkData => {
-      console.log("chunkData = ", chunkData);
+      console.log("chunk name = ", chunkData.chunk.name);
       return "[name].[hash].js";
     },
     path: path.resolve(__dirname, "dist"),
@@ -62,6 +62,7 @@ module.exports = {
   module: require("./webpack/module.js"),
   externals: {
     react: "React",
-    "react-dom": "ReactDOM"
+    "react-dom": "ReactDOM",
+    AgGridReact: "AgGridReact"
   }
 };

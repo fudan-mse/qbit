@@ -1,6 +1,5 @@
 import * as React from "react";
 import { Table } from "antd";
-export interface DocsProps {}
 
 const columns = [
   {
@@ -28,6 +27,6 @@ const data = [
   { key: 4, bid: 90, price: 25, ask: "" }
 ];
 
-export const LimitOrderBookBlotterWindow = (props: DocsProps) => (
-  <Table columns={columns} dataSource={data} />
+export const LimitOrderBookBlotterWindow = () => (
+  <Table columns={columns} dataSource={data} pagination={false} />
 );

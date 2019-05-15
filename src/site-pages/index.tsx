@@ -1,3 +1,5 @@
+import { BlotterDetail } from "../components/BlotterDetail";
+
 require("../common/service-worker");
 import * as React from "react";
 import * as ReactDOM from "react-dom";
@@ -37,6 +39,8 @@ ReactDOM.render(
             <Route exact path="/" component={Index} />
             <Route exact path="/en/" component={Market} />
             <Route exact path="/en/orders" component={Orders} />
+            <Route exact path="/en/blotter/:symbol" component={BlotterDetail} />
+            <Route path="*" component={() => <div>404 NOT FOUND</div>} />
           </Switch>
         </Content>
         <SiteFooter />
