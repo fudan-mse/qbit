@@ -49,10 +49,7 @@ module.exports = {
     new webpack.NoEmitOnErrorsPlugin()
   ],
   output: {
-    filename: chunkData => {
-      console.log("chunk name = ", chunkData.chunk.name);
-      return "[name].[hash].js";
-    },
+    filename: "[name].[hash].js",
     path: path.resolve(__dirname, "dist"),
     publicPath: ASSET_PATH
   },

@@ -2,6 +2,7 @@ import * as React from "react";
 
 import { AgGridReact } from "ag-grid-react";
 import { Amendment } from "./Amendment";
+import { CellClickedEvent } from "ag-grid-community/src/ts/events";
 
 const data = {
   columnDefs: [
@@ -130,6 +131,11 @@ export class OrderBlotterWindow extends React.Component {
       showAmendmentWindow: true
     });
   };
+  gotoLimitBlotter = (event: CellClickedEvent) => {
+    console.log(event);
+    if (event.column.getColId() === "symbol") {
+    }
+  };
 
   render() {
     return (
@@ -143,6 +149,7 @@ export class OrderBlotterWindow extends React.Component {
           defaultColDef={{ resizable: true }}
           onGridReady={this.onGridReady}
           onRowClicked={this.amend.bind(this)}
+          onCellClicked={this.gotoLimitBlotter.bind(this)}
         />
         <Amendment
           visible={this.state.showAmendmentWindow}

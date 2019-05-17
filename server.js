@@ -1,3 +1,5 @@
+const fs = require("fs");
+
 const express = require("express");
 const webpack = require("webpack");
 const webpackDevMiddleware = require("webpack-dev-middleware");
@@ -24,6 +26,7 @@ app.use("*", function(req, res, next) {
 
   compiler.outputFileSystem.readFile(filename, function(err, result) {
     if (err) {
+      console.log(fs.readdirSync(compiler.outputPath));
       console.error(req.url, filename);
       return next(err);
     }
