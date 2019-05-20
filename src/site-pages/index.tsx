@@ -13,10 +13,13 @@ import SiteFooter from "../components/SiteFooter";
 import Market from "../components/Market";
 import Orders from "../components/Orders";
 
-class Index extends React.Component {
+export interface IndexProps {
+  history: any;
+}
+
+class Index extends React.Component<IndexProps> {
   componentDidMount(): void {
-    console.log("did mount");
-    location.href = process.env.ASSET_PATH + "en/";
+    this.props.history.push(process.env.ASSET_PATH + "en/");
   }
 
   render() {

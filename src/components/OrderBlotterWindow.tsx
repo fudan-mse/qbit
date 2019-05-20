@@ -3,6 +3,9 @@ import * as React from "react";
 import { AgGridReact } from "ag-grid-react";
 import { Amendment } from "./Amendment";
 import { CellClickedEvent } from "ag-grid-community/src/ts/events";
+export interface OrderBlotterWindowProps {
+  history: any;
+}
 
 const data = {
   columnDefs: [
@@ -119,7 +122,9 @@ const data = {
   ]
 };
 
-export class OrderBlotterWindow extends React.Component {
+export class OrderBlotterWindow extends React.Component<
+  OrderBlotterWindowProps
+> {
   state = { showAmendmentWindow: false };
 
   onGridReady = (params: { api: any }) => {
@@ -132,9 +137,14 @@ export class OrderBlotterWindow extends React.Component {
     });
   };
   gotoLimitBlotter = (event: CellClickedEvent) => {
-    console.log(event);
     if (event.column.getColId() === "symbol") {
+      this.props.history.push(
+        process.env.ASSET_PATH + "en/blotter/" + event.data.symbol
+      );
+      return false;
     }
+
+    this.amend();
   };
 
   render() {
@@ -148,7 +158,6 @@ export class OrderBlotterWindow extends React.Component {
           rowData={data.rowData}
           defaultColDef={{ resizable: true }}
           onGridReady={this.onGridReady}
-          onRowClicked={this.amend.bind(this)}
           onCellClicked={this.gotoLimitBlotter.bind(this)}
         />
         <Amendment
