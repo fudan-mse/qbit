@@ -138,9 +138,7 @@ export class OrderBlotterWindow extends React.Component<
   };
   gotoLimitBlotter = (event: CellClickedEvent) => {
     if (event.column.getColId() === "symbol") {
-      this.props.history.push(
-        process.env.ASSET_PATH + "en/blotter/" + event.data.symbol
-      );
+      this.props.history.push("/en/blotter/" + event.data.symbol);
       return false;
     }
 
