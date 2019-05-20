@@ -19,7 +19,7 @@ export interface IndexProps {
 
 class Index extends React.Component<IndexProps> {
   componentDidMount(): void {
-    this.props.history.push(process.env.ASSET_PATH + "en/");
+    this.props.history.push("/en/");
   }
 
   render() {
