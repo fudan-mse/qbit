@@ -17,12 +17,13 @@ const columns = [
 
 
 export interface LimitOrderBookBlotterProps {
-    blotter: any
+    blotter: any,
+    loading: boolean
 }
 
 export const LimitOrderBookBlotterWindow = (props: LimitOrderBookBlotterProps) => {
 
-    const {blotter} = props
+    const {blotter, loading} = props
 
     const data = [
         {key: -5, bid: "", price: blotter.a5_p, ask: blotter.a5_v},
@@ -39,6 +40,6 @@ export const LimitOrderBookBlotterWindow = (props: LimitOrderBookBlotterProps) =
     ];
 
     return (
-        <Table columns={columns} dataSource={data} pagination={false}/>
+        <Table loading={loading} columns={columns} dataSource={data} pagination={false}/>
     )
 };
