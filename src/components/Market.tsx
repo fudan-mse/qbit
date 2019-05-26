@@ -68,6 +68,7 @@ export default class Market extends React.Component<MarketProps, MarketState> {
         }
         return (
             <div>
+                <h1>Market Overview:</h1>
                 <div
                     className="ag-theme-balham"
                     style={{height: "650px", width: "100%"}}
@@ -99,12 +100,16 @@ export default class Market extends React.Component<MarketProps, MarketState> {
             console.log('market = ', market)
 
             this.setState({market})
-        } catch (ex) {
-            console.error(ex)
-        } finally {
             if (StockMarket.isTransactionTime() && this.refreshMarket) {
                 await this.updateMarketData()
             }
+        } catch (ex) {
+            console.error(ex)
+            if (this.refreshMarket) {
+                await this.updateMarketData()
+            }
+        } finally {
+
         }
     }
 

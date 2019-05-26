@@ -6,8 +6,6 @@ const sitePages = fs.readdirSync("src/site-pages");
 const functionalPages = fs.readdirSync("src/function-pages");
 const sitePagesEn = fs.readdirSync("src/site-pages-en");
 const sitePagesEnBlotter = fs.readdirSync("src/site-pages-en/blotter");
-const stocks = require('../src/cache/market-all.json')
-const exec = require('child_process').exec;
 
 const entries = {};
 
@@ -52,7 +50,7 @@ module.exports = {
                     filename: `${path.basename(p, path.extname(p))}.html`,
                     title: "My Order Management System",
                     chunks: [path.basename(p, path.extname(p)), "vendors~index", "index"],
-                    template: "src/static/index.html"
+                    template: "src/templates/index.html"
                 })
         ),
         ...sitePagesEn.map(
@@ -61,7 +59,7 @@ module.exports = {
                     filename: `en/${path.basename(p, path.extname(p))}.html`,
                     title: "My Order Management System",
                     chunks: [path.basename(p, path.extname(p)), "vendors~index", "index"],
-                    template: "src/static/index.html"
+                    template: "src/templates/index.html"
                 })
         ),
         ...sitePagesEnBlotter.map(
@@ -74,7 +72,7 @@ module.exports = {
                         "en/vendors~index",
                         "index"
                     ],
-                    template: "src/static/index.html"
+                    template: "src/templates/index.html"
                 })
         ),
         ...functionalPages.map(
@@ -85,17 +83,5 @@ module.exports = {
                     chunks: [path.basename(p, path.extname(p))]
                 })
         ),
-        {
-            apply: (compiler) => {
-                compiler.hooks.afterEmit.tap('AfterEmitPlugin', (compilation) => {
-                    stocks.map(stock => {
-                        exec(`cp dist/en/blotter/1234.html dist/en/blotter/${stock.code}.html`, (err, stdout, stderr) => {
-                            if (stdout) process.stdout.write(stdout);
-                            if (stderr) process.stderr.write(stderr);
-                        });
-                    })
-                });
-            }
-        }
     ]
 };

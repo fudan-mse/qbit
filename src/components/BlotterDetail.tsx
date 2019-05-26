@@ -50,13 +50,18 @@ export class BlotterDetail extends React.Component<BlotterDetailProps, BlotterDe
             console.log('blotter = ', blotter)
 
             this.setState({blotterDetail: blotter})
-        } catch (ex) {
-            console.error(ex)
-        } finally {
-            this.setState({loading: false})
+
             if (StockMarket.isTransactionTime() && this.refreshBlotter) {
                 await this.updateBlotter(symbol)
             }
+        } catch (ex) {
+            console.error(ex)
+
+            if (this.refreshBlotter) {
+                await this.updateBlotter(symbol)
+            }
+        } finally {
+            this.setState({loading: false})
         }
     }
 
@@ -71,9 +76,10 @@ export class BlotterDetail extends React.Component<BlotterDetailProps, BlotterDe
 
         return (
             <div>
-                <h2>Blotter Detail of {symbol} {blotterDetail.name}</h2>
-                <p>Last updated at: {blotterDetail.date} {blotterDetail.time}</p>
-                <p>open: {blotterDetail.open} pre close:{blotterDetail.pre_close}</p>
+                <h2>Blotter Detail of <strong>{symbol}</strong> <strong>{blotterDetail.name}</strong></h2>
+                <p>Last updated at: <strong>{blotterDetail.date} {blotterDetail.time}</strong></p>
+                <p>pre close: <strong>{blotterDetail.pre_close}</strong> open: <strong>{blotterDetail.open}</strong></p>
+                <p>high: <strong>{blotterDetail.high}</strong> low: <strong>{blotterDetail.low}</strong></p>
                 <LimitOrderBookBlotterWindow blotter={blotterDetail} loading={loading}/>
             </div>
         );
