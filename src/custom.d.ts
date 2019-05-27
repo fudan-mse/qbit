@@ -14,3 +14,4 @@ declare module "!!raw-loader!*" {
 }
 
 declare module 'sockjs-client';
+declare module 'stompjs';

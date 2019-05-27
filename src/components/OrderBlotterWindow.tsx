@@ -4,6 +4,8 @@ import { AgGridReact } from "ag-grid-react";
 import { Amendment } from "./Amendment";
 import { CellClickedEvent } from "ag-grid-community/src/ts/events";
 import * as SockJs from 'sockjs-client'
+const Stomp = require("stompjs/lib/stomp.js").Stomp
+
 export interface OrderBlotterWindowProps {
   history: any;
 }
@@ -147,8 +149,21 @@ export class OrderBlotterWindow extends React.Component<
   };
 
   componentDidMount() {
-    const socket = new SockJs('/gs-guide-websocket')
+    console.log('new socket ing...')
+    const socket = new SockJs('http://moms.forexai.cn/gs-guide-websocket')
     console.log('socket = ', socket)
+    const stompClient = Stomp.over(socket);
+    console.log('stompClient = ', stompClient)
+
+    stompClient.connect({}, function (frame: any) {
+      console.log('Connected: ' + frame);
+      stompClient.subscribe('/topic/order/live', function (greeting: any) {
+        var msg = JSON.parse(greeting.body);
+        for (var i = 0; i < msg.length; i++) {
+          console.log(msg[i])
+        }
+      });
+    });
   }
 
   render() {
