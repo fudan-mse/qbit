@@ -12,3 +12,5 @@ declare module "!!raw-loader!*" {
   const content: string;
   export = content;
 }
+
+declare module 'sockjs-client';

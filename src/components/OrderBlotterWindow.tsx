@@ -3,6 +3,7 @@ import * as React from "react";
 import { AgGridReact } from "ag-grid-react";
 import { Amendment } from "./Amendment";
 import { CellClickedEvent } from "ag-grid-community/src/ts/events";
+import * as SockJs from 'sockjs-client'
 export interface OrderBlotterWindowProps {
   history: any;
 }
@@ -124,7 +125,7 @@ const data = {
 
 export class OrderBlotterWindow extends React.Component<
   OrderBlotterWindowProps
-> {
+  > {
   state = { showAmendmentWindow: false };
 
   onGridReady = (params: { api: any }) => {
@@ -144,6 +145,11 @@ export class OrderBlotterWindow extends React.Component<
 
     this.amend();
   };
+
+  componentDidMount() {
+    const socket = new SockJs('/gs-guide-websocket')
+    console.log('socket = ', socket)
+  }
 
   render() {
     return (
