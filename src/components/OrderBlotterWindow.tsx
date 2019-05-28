@@ -4,11 +4,19 @@ import { AgGridReact } from "ag-grid-react";
 import { Amendment } from "./Amendment";
 import { CellClickedEvent } from "ag-grid-community/src/ts/events";
 import * as SockJs from "sockjs-client";
+import { Progress, Spin } from "antd";
 
 const Stomp = require("stompjs/lib/stomp.js").Stomp;
 
 export interface OrderBlotterWindowProps {
   history: any;
+}
+
+export interface OrderBlotterWindowState {
+  connected: boolean;
+  connecting: boolean;
+  showAmendmentWindow: boolean;
+  orders: any[];
 }
 
 const data = {
@@ -28,108 +36,23 @@ const data = {
     },
     { headerName: "Qty", field: "quantity" },
     { headerName: "Client", field: "client" },
-    { headerName: "% Fill", field: "fill" },
-    { headerName: "Destination", field: "destination", resizeable: true },
+    { headerName: "% Fill", field: "fillPercentage" },
+    { headerName: "Destination", field: "market", resizeable: true },
     { headerName: "Status", field: "status", resizeable: true }
   ],
-  rowData: [
-    {
-      symbol: "600001",
-      side: "Buy",
-      price: 10,
-      quantity: 100,
-      client: "ABC",
-      fill: 0,
-      destination: "SSE",
-      status: "New"
-    },
-    {
-      symbol: "600001",
-      side: "Sell",
-      price: 11.1,
-      quantity: 101,
-      client: "BCD",
-      fill: 10,
-      destination: "SSE",
-      status: "Fill"
-    },
-    {
-      symbol: "600002",
-      side: "Buy",
-      price: 10,
-      quantity: 1000,
-      client: "ABC",
-      fill: 0,
-      destination: "SSE",
-      status: "Rejected by Exchange"
-    },
-    {
-      symbol: "600001",
-      side: "Buy",
-      price: 12,
-      quantity: 100,
-      client: "Bridgewater",
-      fill: 100,
-      destination: "SSE",
-      status: "Cancelled"
-    },
-    {
-      symbol: "600001",
-      side: "Buy",
-      price: 10,
-      quantity: 100,
-      client: "ABC",
-      fill: 0,
-      destination: "SSE",
-      status: "New"
-    },
-    {
-      symbol: "600001",
-      side: "Buy",
-      price: 10,
-      quantity: 100,
-      client: "ABC",
-      fill: 0,
-      destination: "SSE",
-      status: "New"
-    },
-    {
-      symbol: "600001",
-      side: "Buy",
-      price: 10,
-      quantity: 100,
-      client: "ABC",
-      fill: 0,
-      destination: "SSE",
-      status: "New"
-    },
-    {
-      symbol: "600001",
-      side: "Buy",
-      price: 10,
-      quantity: 100,
-      client: "ABC",
-      fill: 0,
-      destination: "SSE",
-      status: "New"
-    },
-    {
-      symbol: "600001",
-      side: "Buy",
-      price: 10,
-      quantity: 100,
-      client: "ABC",
-      fill: 0,
-      destination: "SSE",
-      status: "New"
-    }
-  ]
+  rowData: require("../cache/orders.json")
 };
 
 export class OrderBlotterWindow extends React.Component<
-  OrderBlotterWindowProps
+  OrderBlotterWindowProps,
+  OrderBlotterWindowState
 > {
-  state = { showAmendmentWindow: false };
+  state = {
+    showAmendmentWindow: false,
+    connected: false,
+    connecting: true,
+    orders: data.rowData
+  };
 
   onGridReady = (params: { api: any }) => {
     params.api.sizeColumnsToFit();
@@ -158,12 +81,14 @@ export class OrderBlotterWindow extends React.Component<
 
     stompClient.connect(
       {},
-      function(frame: any) {
+      (frame: any) => {
         console.log("Connected: " + frame);
-        stompClient.subscribe("/topic/order/live", function(greeting: any) {
-          const msg = JSON.parse(greeting.body);
-          for (let i = 0; i < msg.length; i++) {
-            console.log(msg[i]);
+        this.setState({ connected: true, connecting: false });
+
+        stompClient.subscribe("/topic/order/live", (res: any) => {
+          this.setState({ orders: JSON.parse(res.body) });
+          for (let i = 0; i < this.state.orders.length; i++) {
+            console.log(this.state.orders[i]);
           }
         });
       }
@@ -172,22 +97,39 @@ export class OrderBlotterWindow extends React.Component<
 
   render() {
     return (
-      <div
-        className="ag-theme-balham"
-        style={{ height: "400px", width: "100%" }}
-      >
-        <AgGridReact
-          columnDefs={data.columnDefs}
-          rowData={data.rowData}
-          defaultColDef={{ resizable: true }}
-          onGridReady={this.onGridReady}
-          onCellClicked={this.gotoLimitBlotter.bind(this)}
-        />
-        <Amendment
-          visible={this.state.showAmendmentWindow}
-          onOK={() => this.setState({ showAmendmentWindow: false })}
-          onCancel={() => this.setState({ showAmendmentWindow: false })}
-        />
+      <div>
+        {this.state.connecting && <Spin />}
+        <div>
+          {!this.state.connected &&
+            !this.state.connecting && (
+              <Progress
+                strokeLinecap="square"
+                type="dashboard"
+                percent={0}
+                status="exception"
+              />
+            )}
+          {this.state.connected && (
+            <Progress strokeLinecap="square" type="dashboard" percent={100} />
+          )}
+        </div>
+        <div
+          className="ag-theme-balham"
+          style={{ height: "400px", width: "100%" }}
+        >
+          <AgGridReact
+            columnDefs={data.columnDefs}
+            rowData={this.state.orders}
+            defaultColDef={{ resizable: true }}
+            onGridReady={this.onGridReady}
+            onCellClicked={this.gotoLimitBlotter.bind(this)}
+          />
+          <Amendment
+            visible={this.state.showAmendmentWindow}
+            onOK={() => this.setState({ showAmendmentWindow: false })}
+            onCancel={() => this.setState({ showAmendmentWindow: false })}
+          />
+        </div>
       </div>
     );
   }
