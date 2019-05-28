@@ -4,7 +4,7 @@ import { AgGridReact } from "ag-grid-react";
 import { Amendment } from "./Amendment";
 import { CellClickedEvent } from "ag-grid-community/src/ts/events";
 import * as SockJs from "sockjs-client";
-import { Progress, Spin } from "antd";
+import { Button, Progress } from "antd";
 
 const Stomp = require("stompjs/lib/stomp.js").Stomp;
 
@@ -17,6 +17,7 @@ export interface OrderBlotterWindowState {
   connecting: boolean;
   showAmendmentWindow: boolean;
   orders: any[];
+  selectedOrder?: any;
 }
 
 const data = {
@@ -28,13 +29,13 @@ const data = {
     },
     {
       headerName: "Side",
-      field: "side"
+      field: "operation"
     },
     {
       headerName: "Price",
       field: "price"
     },
-    { headerName: "Qty", field: "quantity" },
+    { headerName: "Qty", field: "lots" },
     { headerName: "Client", field: "client" },
     { headerName: "% Fill", field: "fillPercentage" },
     { headerName: "Destination", field: "market", resizeable: true },
@@ -51,16 +52,18 @@ export class OrderBlotterWindow extends React.Component<
     showAmendmentWindow: false,
     connected: false,
     connecting: true,
-    orders: data.rowData
+    orders: data.rowData,
+    selectedOrder: {}
   };
 
   onGridReady = (params: { api: any }) => {
     params.api.sizeColumnsToFit();
   };
 
-  amend = () => {
+  amend = (order?: any) => {
     this.setState({
-      showAmendmentWindow: true
+      showAmendmentWindow: true,
+      selectedOrder: order
     });
   };
   gotoLimitBlotter = (event: CellClickedEvent) => {
@@ -69,48 +72,55 @@ export class OrderBlotterWindow extends React.Component<
       return false;
     }
 
-    this.amend();
+    this.amend(event.data);
   };
+  private socket: any;
+  private stompClient: any;
 
   componentDidMount() {
     console.log("new socket ing...");
-    const socket = new SockJs("http://moms.forexai.cn/gs-guide-websocket");
-    console.log("socket = ", socket);
-    const stompClient = Stomp.over(socket);
-    console.log("stompClient = ", stompClient);
+    this.socket = new SockJs("http://moms.forexai.cn/gs-guide-websocket");
+    this.stompClient = Stomp.over(this.socket);
+    console.log("stompClient = ", this.stompClient);
 
-    stompClient.connect(
+    this.stompClient.connect(
       {},
       (frame: any) => {
         console.log("Connected: " + frame);
         this.setState({ connected: true, connecting: false });
 
-        stompClient.subscribe("/topic/order/live", (res: any) => {
+        this.stompClient.subscribe("/topic/order/live", (res: any) => {
           this.setState({ orders: JSON.parse(res.body) });
-          for (let i = 0; i < this.state.orders.length; i++) {
-            console.log(this.state.orders[i]);
-          }
         });
       }
     );
   }
 
+  componentWillUnmount(): void {
+    if (!!this.stompClient) {
+      this.stompClient.disconnect();
+    }
+
+    this.stompClient = null;
+  }
+
   render() {
     return (
       <div>
-        {this.state.connecting && <Spin />}
+        <Button
+          type="primary"
+          loading={this.state.connecting}
+          onClick={() => this.amend({})}
+        >
+          Place Order
+        </Button>
         <div>
           {!this.state.connected &&
             !this.state.connecting && (
-              <Progress
-                strokeLinecap="square"
-                type="dashboard"
-                percent={0}
-                status="exception"
-              />
+              <Progress percent={0} status="exception" showInfo={false} />
             )}
           {this.state.connected && (
-            <Progress strokeLinecap="square" type="dashboard" percent={100} />
+            <Progress percent={100} status="active" showInfo={false} />
           )}
         </div>
         <div
@@ -128,6 +138,7 @@ export class OrderBlotterWindow extends React.Component<
             visible={this.state.showAmendmentWindow}
             onOK={() => this.setState({ showAmendmentWindow: false })}
             onCancel={() => this.setState({ showAmendmentWindow: false })}
+            order={this.state.selectedOrder}
           />
         </div>
       </div>
