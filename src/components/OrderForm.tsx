@@ -12,6 +12,12 @@ interface OrderFormProps extends FormComponentProps {
 }
 
 class OrderForm extends React.Component<OrderFormProps, any> {
+  componentWillUnmount(): void {
+    console.log("form reseting...");
+    const { resetFields } = this.props.form;
+    resetFields();
+  }
+
   render() {
     const { getFieldDecorator } = this.props.form;
     const { symbol, side, price, qty, client, destination } = this.props;

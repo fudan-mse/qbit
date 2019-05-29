@@ -38,6 +38,13 @@ let data = {
   ]
 };
 
+const amendOrder = (order: any) => {
+  console.log("amend order ", order);
+};
+const placeOrder = (order: any) => {
+  console.log("place order ", order);
+};
+
 const AmendmentComponent = (props: AmendmentModalProps) => {
   const { order } = props;
 
@@ -51,7 +58,6 @@ const AmendmentComponent = (props: AmendmentModalProps) => {
   ];
 
   console.log("props.order = ", props.order, Object.entries(props.order));
-
   return (
     <Modal
       title={
@@ -59,7 +65,11 @@ const AmendmentComponent = (props: AmendmentModalProps) => {
       }
       visible={props.visible}
       onCancel={props.onCancel}
-      onOk={props.onOK}
+      onOk={
+        JSON.stringify(props.order) !== "{}"
+          ? () => amendOrder(props.order)
+          : () => placeOrder(props.order)
+      }
     >
       <div>
         <EnhancedOrderForm
