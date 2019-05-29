@@ -1,12 +1,11 @@
 import * as React from "react";
-import { Form, Input, Modal } from "antd";
-import { AgGridReact } from "ag-grid-react";
+import { Modal } from "antd";
+import { EnhancedOrderForm } from "./OrderForm";
 export interface AmendmentModalProps {
   visible: boolean;
   onCancel: () => void;
   onOK: () => void;
   order: any;
-  form: any;
 }
 
 let data = {
@@ -53,8 +52,6 @@ const AmendmentComponent = (props: AmendmentModalProps) => {
 
   console.log("props.order = ", props.order, Object.entries(props.order));
 
-  const { getFieldDecorator } = props.form;
-
   return (
     <Modal
       title={
@@ -65,45 +62,17 @@ const AmendmentComponent = (props: AmendmentModalProps) => {
       onOk={props.onOK}
     >
       <div>
-        <Form
-          labelCol={{ xs: { span: 24 }, sm: { span: 8 } }}
-          wrapperCol={{
-            xs: { span: 24 },
-            sm: { span: 16 }
-          }}
-          onSubmit={() => {}}
-        >
-          <Form.Item label={"Symbol"}>
-            {getFieldDecorator("Symbol", {
-              rules: [
-                { type: "text", message: "for example, 600848" },
-                { required: true, message: "Please input symbol!" }
-              ]
-            })(<Input />)}
-          </Form.Item>
-          <Form.Item label={"Side"}>
-            {getFieldDecorator("Side", {
-              rules: [
-                { type: "text", message: "" },
-                { required: true, message: "" }
-              ]
-            })(<Input />)}
-          </Form.Item>
-        </Form>
-      </div>
-      <div
-        className="ag-theme-balham"
-        style={{ height: "230px", width: "100%" }}
-      >
-        <AgGridReact
-          columnDefs={data.columnDefs}
-          rowData={data.rowData}
-          defaultColDef={{ resizable: true }}
-          onGridReady={({ api }) => api.sizeColumnsToFit()}
+        <EnhancedOrderForm
+          symbol={order.symbol}
+          side={order.operation}
+          client={order.client}
+          destination={order.market}
+          price={order.price}
+          qty={order.lots}
         />
       </div>
     </Modal>
   );
 };
 
-export const Amendment = Form.create({ name: "amendment" })(AmendmentComponent);
+export const Amendment = AmendmentComponent;
