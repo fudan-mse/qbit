@@ -1,6 +1,7 @@
 import * as React from "react";
 import { Modal } from "antd";
 import { EnhancedOrderForm } from "./OrderForm";
+import { awaitExpression } from "@babel/types";
 export interface AmendmentModalProps {
   visible: boolean;
   onCancel: () => void;
@@ -8,56 +9,33 @@ export interface AmendmentModalProps {
   order: any;
 }
 
-let data = {
-  columnDefs: [
-    {
-      headerName: "Key",
-      field: "key"
+const amendOrder = (order: any, newOrder: any) => {
+  console.log("amend order ", order, newOrder);
+};
+const placeOrder = async (order: any, newOrder: any) => {
+  console.log("placing order... ", order, newOrder);
+  await fetch("http://moms.forexai.cn/order", {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json"
     },
-    { headerName: "Value", field: "value" }
-  ],
-  rowData: [
-    {
-      key: "Symbol",
-      value: "600001"
-    },
-    {
-      key: "Side",
-      value: "Buy"
-    },
-    {
-      key: "Price",
-      value: "10"
-    },
-    {
-      key: "Qty",
-      value: 100
-    },
-    { key: "Client", value: "ABC" },
-    { key: "Destination", value: "SSE" }
-  ]
+    body: JSON.stringify({
+      ...newOrder,
+      lots: newOrder.qty,
+      market: newOrder.destination,
+      operation: newOrder.side,
+      status: "NEW",
+      modifiedTime: new Date(),
+      createdTime: new Date()
+    })
+  });
 };
 
-const amendOrder = (order: any) => {
-  console.log("amend order ", order);
-};
-const placeOrder = (order: any) => {
-  console.log("place order ", order);
-};
-
-const AmendmentComponent = (props: AmendmentModalProps) => {
+export const Amendment = (props: AmendmentModalProps) => {
   const { order } = props;
+  const newOrder = { ...order };
 
-  data.rowData = [
-    { key: "Symbol", value: order.symbol },
-    { key: "Side", value: order.operation },
-    { key: "Price", value: order.price },
-    { key: "Qty", value: order.lots },
-    { key: "Client", value: order.client },
-    { key: "Destination", value: order.market }
-  ];
-
-  console.log("props.order = ", props.order, Object.entries(props.order));
   return (
     <Modal
       title={
@@ -65,11 +43,13 @@ const AmendmentComponent = (props: AmendmentModalProps) => {
       }
       visible={props.visible}
       onCancel={props.onCancel}
-      onOk={
+      onOk={() => {
         JSON.stringify(props.order) !== "{}"
-          ? () => amendOrder(props.order)
-          : () => placeOrder(props.order)
-      }
+          ? amendOrder(props.order, newOrder)
+          : placeOrder(props.order, newOrder);
+
+        props.onOK();
+      }}
     >
       <div>
         <EnhancedOrderForm
@@ -79,10 +59,12 @@ const AmendmentComponent = (props: AmendmentModalProps) => {
           destination={order.market}
           price={order.price}
           qty={order.lots}
+          onChange={changedFields => {
+            const [[_, field]] = Object.entries(changedFields);
+            newOrder[field.name] = field.value;
+          }}
         />
       </div>
     </Modal>
   );
 };
-
-export const Amendment = AmendmentComponent;

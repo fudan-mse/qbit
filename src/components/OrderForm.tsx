@@ -9,6 +9,7 @@ interface OrderFormProps extends FormComponentProps {
   qty: number;
   client: string;
   destination: string;
+  onChange: (changedFields: any) => void;
 }
 
 class OrderForm extends React.Component<OrderFormProps, any> {
@@ -35,7 +36,7 @@ class OrderForm extends React.Component<OrderFormProps, any> {
           {getFieldDecorator("symbol", {
             initialValue: symbol,
             rules: [
-              { type: "text", message: "for example, 600848" },
+              { type: "string", message: "for example, 600848" },
               { required: true, message: "Please input symbol!" }
             ]
           })(<Input />)}
@@ -44,7 +45,7 @@ class OrderForm extends React.Component<OrderFormProps, any> {
           {getFieldDecorator("side", {
             initialValue: side,
             rules: [
-              { type: "text", message: "" },
+              { type: "string", message: "" },
               { required: true, message: "" }
             ]
           })(<Input />)}
@@ -52,27 +53,21 @@ class OrderForm extends React.Component<OrderFormProps, any> {
         <Form.Item label={"Price"}>
           {getFieldDecorator("price", {
             initialValue: price,
-            rules: [
-              { type: "number", message: "" },
-              { required: true, message: "" }
-            ]
-          })(<Input />)}
+            rules: [{ required: true, message: "" }]
+          })(<Input type={"number"} />)}
         </Form.Item>
         <Form.Item label={"Qty"}>
           {getFieldDecorator("qty", {
             initialValue: qty,
-            rules: [
-              { type: "number", message: "" },
-              { required: true, message: "" }
-            ]
-          })(<Input />)}
+            rules: [{ required: true, message: "" }]
+          })(<Input type={"number"} />)}
         </Form.Item>
         <Form.Item label={"Client"}>
           {getFieldDecorator("client", {
             initialValue: client,
             rules: [
               {
-                type: "text",
+                type: "string",
                 message: ""
               },
               {
@@ -86,7 +81,7 @@ class OrderForm extends React.Component<OrderFormProps, any> {
           {getFieldDecorator("destination", {
             initialValue: destination,
             rules: [
-              { type: "text", message: "" },
+              { type: "string", message: "" },
               { required: true, message: "" }
             ]
           })(<Input />)}
@@ -96,6 +91,9 @@ class OrderForm extends React.Component<OrderFormProps, any> {
   }
 }
 
-export const EnhancedOrderForm = Form.create<OrderForm>({ name: "orderForm" })(
-  OrderForm
-);
+export const EnhancedOrderForm = Form.create<OrderFormProps>({
+  name: "orderForm",
+  onFieldsChange(props, changedFields) {
+    props.onChange(changedFields);
+  }
+})(OrderForm);
