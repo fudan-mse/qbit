@@ -5,6 +5,7 @@ import { Amendment } from "./Amendment";
 import { CellClickedEvent } from "ag-grid-community/src/ts/events";
 import * as SockJs from "sockjs-client";
 import { Button, Progress } from "antd";
+import Merge from "../common/Merge";
 
 const Stomp = require("stompjs/lib/stomp.js").Stomp;
 
@@ -87,10 +88,12 @@ export class OrderBlotterWindow extends React.Component<
       {},
       (frame: any) => {
         console.log("Connected: " + frame);
-        this.setState({ connected: true, connecting: false });
+        this.setState({ connected: true, connecting: false, orders: [] });
 
         this.stompClient.subscribe("/topic/order/live", (res: any) => {
-          this.setState({ orders: JSON.parse(res.body) });
+          this.setState({
+            orders: Merge.byKey(this.state.orders, JSON.parse(res.body), "id")
+          });
         });
       }
     );

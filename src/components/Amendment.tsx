@@ -60,7 +60,7 @@ export const Amendment = (props: AmendmentModalProps) => {
           price={order.price}
           qty={order.lots}
           onChange={changedFields => {
-            const [[_, field]] = Object.entries(changedFields);
+            const [[, field]] = Object.entries(changedFields);
             newOrder[field.name] = field.value;
           }}
         />
