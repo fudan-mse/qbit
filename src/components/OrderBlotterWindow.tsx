@@ -80,7 +80,7 @@ export class OrderBlotterWindow extends React.Component<
 
   componentDidMount() {
     console.log("new socket ing...");
-    this.socket = new SockJs("http://moms.forexai.cn/gs-guide-websocket");
+    this.socket = new SockJs("https://qbit.jiwai.win/gs-guide-websocket");
     this.stompClient = Stomp.over(this.socket);
     console.log("stompClient = ", this.stompClient);
 

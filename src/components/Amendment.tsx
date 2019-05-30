@@ -14,7 +14,7 @@ const amendOrder = (order: any, newOrder: any) => {
 };
 const placeOrder = async (order: any, newOrder: any) => {
   console.log("placing order... ", order, newOrder);
-  await fetch("http://moms.forexai.cn/order", {
+  await fetch("https://qbit.jiwai.win/order", {
     method: "POST",
     headers: {
       Accept: "application/json",
