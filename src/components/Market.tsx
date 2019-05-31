@@ -44,7 +44,8 @@ export default class Market extends React.Component<MarketProps, MarketState> {
                     field: "name",
                     resizable: true,
                     width: 100,
-                    minWidth: 100
+                    minWidth: 100,
+                    filter: true
                 },
                 {
                     headerName: "Change Percent",
