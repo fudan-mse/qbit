@@ -20,7 +20,7 @@ export const Nav = (props: NavProps) => (
     </Menu.Item>
     <Menu.Item key="/source">
       <a
-        href="https://github.com/Jeff-Tian/wechat-oauth-redirect"
+        href="https://github.com/fudan-mse/qbit"
         target="_blank"
         rel="noopener noreferrer"
       >
