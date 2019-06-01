@@ -105,7 +105,19 @@ export class OrderBlotterWindow extends React.Component<OrderBlotterWindowProps,
 
                 this.stompClient.subscribe("/topic/order/live", (res: any) => {
                     this.setState({
-                        orders: (Merge.byKey(this.state.orders, JSON.parse(res.body), "id").reverse())
+                        orders: (Merge.byKey(this.state.orders, JSON.parse(res.body), "id").reverse()).map((o: any) => ({
+                            symbol: o.symbol,
+                            side: o.side,
+                            operation: o.operation,
+                            price: o.price,
+                            qty: o.qty,
+                            lots: o.lots,
+                            fillPercentage: (o.fillPercentage * 100) + ' %',
+                            client: o.client,
+                            destination: o.destination,
+                            market: o.market,
+                            status: o.status
+                        }))
                     });
                 });
             }
