@@ -20,6 +20,17 @@ app.use(function (req, res, next) {
 
 // Tell express to use the webpack-dev-middleware and use the webpack.config.js
 // configuration file as a base.
+
+app.use("/lib*", function(req, res, next) {
+  if (req.path.startsWith("/lib")) {
+    console.log("req1 = ", req.path, req.url);
+    res.sendFile(req.path.replace("/lib", "node_modules"));
+  } else {
+    console.log("req1x = ", req.path, req.url);
+    next();
+  }
+});
+
 app.use(
     webpackDevMiddleware(compiler, {
         publicPath: config.output.publicPath
@@ -29,6 +40,16 @@ app.use(
 app.use(require("webpack-hot-middleware")(compiler));
 
 app.use(express.static("src/site-pages"));
+
+app.use("/lib*", function (req, res, next) {
+  if (req.path.startsWith("/lib")) {
+    console.log("req = ", req.path, req.url);
+    res.sendFile(req.path.replace("/lib", "node_modules"));
+  } else {
+    console.log("reqx = ", req.path, req.url);
+    next();
+  }
+});
 
 app.use("*", function (req, res, next) {
     const filename = path.join(compiler.outputPath, `index.html`);
